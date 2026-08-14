@@ -35,7 +35,7 @@ export default function ControllerScreen() {
       keyboardVerticalOffset={Platform.OS === 'ios' ? 8 : 0}
     >
       <LinearGradient
-        colors={['#12141A', '#07080A', '#000000']}
+        colors={['#000000', '#000000', '#000000']}
         locations={[0, 0.5, 1]}
         style={StyleSheet.absoluteFill}
       />

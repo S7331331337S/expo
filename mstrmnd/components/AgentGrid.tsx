@@ -22,7 +22,7 @@ export function AgentGrid() {
 
   return (
     <View style={styles.chassis}>
-      <LinearGradient colors={['#1A1D24', '#12151A', '#0C0E12']} style={StyleSheet.absoluteFill} />
+      <LinearGradient colors={['#0A0A0C', '#050506', '#000000']} style={StyleSheet.absoluteFill} />
       <View style={styles.screwRow}>
         <Screw />
         <Text style={styles.chassisLabel}>PAD DECK // 3×4</Text>

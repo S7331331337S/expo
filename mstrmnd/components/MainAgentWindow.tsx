@@ -205,11 +205,11 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: colors.bezelHot,
     overflow: 'hidden',
-    backgroundColor: '#0E1319',
+    backgroundColor: '#050507',
   },
   window: {
     flex: 1,
-    backgroundColor: '#0E1319',
+    backgroundColor: '#050507',
   },
   header: {
     flexDirection: 'row',
@@ -274,14 +274,14 @@ const styles = StyleSheet.create({
   },
   userBubble: {
     alignSelf: 'flex-end',
-    backgroundColor: '#1A2430',
+    backgroundColor: '#101014',
     borderColor: colors.hairline,
     maxWidth: '88%',
   },
   agentBubble: {
     alignSelf: 'flex-start',
-    backgroundColor: '#10161E',
-    borderColor: '#243040',
+    backgroundColor: '#0A0A0C',
+    borderColor: '#1A1A1E',
     maxWidth: '92%',
   },
   bubbleRole: {
@@ -320,7 +320,7 @@ const styles = StyleSheet.create({
     flex: 1,
     fontFamily: 'SpaceGrotesk_400Regular',
     color: colors.ink,
-    backgroundColor: '#12161D',
+    backgroundColor: '#0A0A0C',
     borderRadius: 12,
     borderWidth: 1,
     borderColor: colors.bezel,

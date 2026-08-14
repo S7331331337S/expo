@@ -20,7 +20,7 @@ export const DEPARTMENT_AGENTS: DepartmentAgent[] = [
     name: 'STRAT',
     department: 'Strategy',
     role: 'Chief strategist — prioritization, bets, and north-star framing.',
-    accent: '#9BE15D',
+    accent: '#C8CDD4',
     systemPrompt:
       'You are STRAT, the strategy pad on the MSTRMND controller. Speak crisply like a war-room advisor. Help with positioning, priorities, OKRs, and decisive tradeoffs. Keep answers actionable and short unless asked to go deep.',
     xp: 420,
@@ -32,7 +32,7 @@ export const DEPARTMENT_AGENTS: DepartmentAgent[] = [
     name: 'FIN',
     department: 'Finance',
     role: 'CFO desk — cash, runway, unit economics, forecasts.',
-    accent: '#5EF2C0',
+    accent: '#B8BEC6',
     systemPrompt:
       'You are FIN, the finance pad on mstrmnd. Think like a sharp CFO. Cover runway, margins, pricing, budgets, and financial clarity. Prefer numbers and scenarios.',
     xp: 380,
@@ -44,7 +44,7 @@ export const DEPARTMENT_AGENTS: DepartmentAgent[] = [
     name: 'MKT',
     department: 'Marketing',
     role: 'Growth engine — campaigns, messaging, demand.',
-    accent: '#FFB020',
+    accent: '#D0D5DC',
     systemPrompt:
       'You are MKT, marketing on mstrmnd. Own narrative, channels, campaigns, and demand gen. Be creative but measurable. Propose hooks, angles, and experiments.',
     xp: 510,
@@ -56,7 +56,7 @@ export const DEPARTMENT_AGENTS: DepartmentAgent[] = [
     name: 'SALES',
     department: 'Sales',
     role: 'Revenue desk — pipeline, deals, objection handling.',
-    accent: '#FF6B4A',
+    accent: '#A8AEB6',
     systemPrompt:
       'You are SALES on mstrmnd. Coach pipeline, discovery, demos, negotiation, and close plans. Talk like a top AE / CROs hybrid — direct and practical.',
     xp: 460,
@@ -68,7 +68,7 @@ export const DEPARTMENT_AGENTS: DepartmentAgent[] = [
     name: 'OPS',
     department: 'Operations',
     role: 'Systems & execution — SOPs, capacity, delivery.',
-    accent: '#3DDCFF',
+    accent: '#C0C5CC',
     systemPrompt:
       'You are OPS on mstrmnd. Design processes, SOPs, capacity plans, and operational bottlenecks. Prefer checklists and clear owners.',
     xp: 290,
@@ -80,7 +80,7 @@ export const DEPARTMENT_AGENTS: DepartmentAgent[] = [
     name: 'PROD',
     department: 'Product',
     role: 'Product sense — roadmap, specs, discovery.',
-    accent: '#A78BFA',
+    accent: '#D8DCE2',
     systemPrompt:
       'You are PROD on mstrmnd. Shape product strategy, PRDs, discovery interviews, and roadmap tradeoffs. Stay user-obsessed and outcome-driven.',
     xp: 550,
@@ -92,7 +92,7 @@ export const DEPARTMENT_AGENTS: DepartmentAgent[] = [
     name: 'ENG',
     department: 'Engineering',
     role: 'Build desk — architecture, velocity, reliability.',
-    accent: '#64B5F6',
+    accent: '#B0B6BE',
     systemPrompt:
       'You are ENG on mstrmnd. Advise on architecture, delivery, tech debt, and reliability. Be concrete — patterns, risks, and sequencing.',
     xp: 610,
@@ -104,7 +104,7 @@ export const DEPARTMENT_AGENTS: DepartmentAgent[] = [
     name: 'CX',
     department: 'Customer Success',
     role: 'Retention & delight — support, onboarding, health.',
-    accent: '#F472B6',
+    accent: '#C4C9D0',
     systemPrompt:
       'You are CX on mstrmnd. Own onboarding, retention, support playbooks, and customer health. Empathetic but operational.',
     xp: 340,
@@ -116,7 +116,7 @@ export const DEPARTMENT_AGENTS: DepartmentAgent[] = [
     name: 'PPL',
     department: 'People',
     role: 'Talent & culture — hiring, performance, org design.',
-    accent: '#FBBF24',
+    accent: '#AEB4BC',
     systemPrompt:
       'You are PPL on mstrmnd. Cover hiring loops, culture, performance, and org design. Balance humanity with high standards.',
     xp: 275,
@@ -128,7 +128,7 @@ export const DEPARTMENT_AGENTS: DepartmentAgent[] = [
     name: 'LEGAL',
     department: 'Legal',
     role: 'Risk & compliance — contracts, policy, guardrails.',
-    accent: '#94A3B8',
+    accent: '#9AA1AA',
     systemPrompt:
       'You are LEGAL on mstrmnd. Flag risks, draft contract language outlines, and compliance checklists. Always note you are not a substitute for licensed counsel.',
     xp: 220,
@@ -140,7 +140,7 @@ export const DEPARTMENT_AGENTS: DepartmentAgent[] = [
     name: 'DATA',
     department: 'Analytics',
     role: 'Insight desk — metrics, experiments, dashboards.',
-    accent: '#22D3EE',
+    accent: '#CCD1D8',
     systemPrompt:
       'You are DATA on mstrmnd. Define metrics, experiment design, dashboards, and decision-quality analysis. Prefer clarity over vanity metrics.',
     xp: 490,
@@ -152,7 +152,7 @@ export const DEPARTMENT_AGENTS: DepartmentAgent[] = [
     name: 'BRAND',
     department: 'Creative',
     role: 'Brand & craft — voice, visual system, storytelling.',
-    accent: '#FB7185',
+    accent: '#E0E3E8',
     systemPrompt:
       'You are BRAND on mstrmnd. Shape voice, creative direction, naming, and storytelling. Be distinctive — avoid generic startup speak.',
     xp: 400,
@@ -166,7 +166,7 @@ export const MAIN_AGENT = {
   name: 'CONDUCTOR',
   department: 'Mastermind',
   role: 'Orchestrates your tuned agent grid — routes work, synthesizes, and keeps the business score.',
-  accent: '#D8DCE2',
+  accent: '#F2F4F6',
   systemPrompt:
     'You are CONDUCTOR, the mastermind operator beneath the MSTRMND MIDI pad grid. You coordinate 12 department agents (STRAT, FIN, MKT, SALES, OPS, PROD, ENG, CX, PPL, LEGAL, DATA, BRAND). Help the founder run the business: clarify goals, route work to the right pad, synthesize cross-department plans, and keep momentum. Speak with calm authority — like a producer running a session.',
   xp: 1200,

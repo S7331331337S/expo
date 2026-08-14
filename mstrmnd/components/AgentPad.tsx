@@ -130,12 +130,12 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: colors.bezel,
     overflow: 'hidden',
-    backgroundColor: '#12151A',
+    backgroundColor: '#08080A',
   },
   padSelected: {
     borderColor: colors.chrome,
     borderWidth: 1.5,
-    backgroundColor: '#1A1D24',
+    backgroundColor: '#101014',
   },
   fill: {
     flex: 1,
@@ -149,8 +149,8 @@ const styles = StyleSheet.create({
     top: 0,
     left: 0,
     right: 0,
-    height: 14,
-    backgroundColor: 'rgba(255,255,255,0.03)',
+    height: 12,
+    backgroundColor: 'rgba(255,255,255,0.02)',
   },
   scan: {
     position: 'absolute',
