@@ -1,16 +1,17 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import Animated, {
+  Easing,
+  interpolate,
   useAnimatedStyle,
   useSharedValue,
+  withRepeat,
   withSpring,
   withTiming,
 } from 'react-native-reanimated';
 import * as Haptics from 'expo-haptics';
-import { LinearGradient } from 'expo-linear-gradient';
-import type { DepartmentAgent } from '@/constants/agents';
-import type { AgentStatus } from '@/constants/agents';
-import { colors, radii } from '@/constants/theme';
+import type { DepartmentAgent, AgentStatus } from '@/constants/agents';
+import { colors } from '@/constants/theme';
 import { LifeOrb, LivingPulse } from '@/components/LivingPulse';
 
 type Props = {
@@ -29,162 +30,166 @@ const STATUS_LABEL: Record<AgentStatus, string> = {
   alert: 'ALERT',
 };
 
-export function AgentPad({
-  agent,
-  selected,
-  status,
-  activity,
-  onPress,
-}: Props) {
+function ScanSweep({ active }: { active: boolean }) {
+  const y = useSharedValue(0);
+  useEffect(() => {
+    if (!active) return;
+    y.value = withRepeat(
+      withTiming(1, { duration: 1800, easing: Easing.inOut(Easing.quad) }),
+      -1,
+      true,
+    );
+  }, [active, y]);
+  const style = useAnimatedStyle(() => ({
+    opacity: active ? 0.28 : 0,
+    transform: [{ translateY: interpolate(y.value, [0, 1], [2, 52]) }],
+  }));
+  if (!active) return null;
+  return <Animated.View pointerEvents="none" style={[styles.scan, style]} />;
+}
+
+export function AgentPad({ agent, selected, status, activity, onPress }: Props) {
   const scale = useSharedValue(1);
   const lit = status !== 'idle' || selected;
+  const processing = status === 'streaming' || status === 'thinking';
 
   const anim = useAnimatedStyle(() => ({
     transform: [{ scale: scale.value }],
   }));
 
-  const handlePressIn = () => {
-    scale.value = withSpring(0.94, { damping: 16, stiffness: 320 });
-  };
-
-  const handlePressOut = () => {
-    scale.value = withSpring(1, { damping: 14, stiffness: 260 });
-  };
-
-  const handlePress = async () => {
-    scale.value = withTiming(0.9, { duration: 60 }, () => {
-      scale.value = withSpring(1, { damping: 12, stiffness: 280 });
-    });
-    try {
-      await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-    } catch {
-      // web / unsupported
-    }
-    onPress();
-  };
-
   return (
     <Animated.View style={[styles.wrap, anim]}>
       <Pressable
-        onPressIn={handlePressIn}
-        onPressOut={handlePressOut}
-        onPress={handlePress}
+        onPressIn={() => {
+          scale.value = withTiming(0.93, { duration: 70 });
+        }}
+        onPressOut={() => {
+          scale.value = withSpring(1, { damping: 16, stiffness: 280 });
+        }}
+        onPress={async () => {
+          try {
+            await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+          } catch {
+            /* web */
+          }
+          onPress();
+        }}
         style={[
           styles.pad,
-          selected && { borderColor: agent.accent, borderWidth: 1.5 },
-          lit && { shadowColor: agent.accent, shadowOpacity: 0.35, shadowRadius: 12 },
+          selected && styles.padSelected,
         ]}
       >
-        <LinearGradient
-          colors={
-            lit
-              ? ['#1A222C', '#10151C', `${agent.accent}22`]
-              : ['#171C24', '#0E1218']
-          }
-          start={{ x: 0, y: 0 }}
-          end={{ x: 1, y: 1 }}
-          style={styles.fill}
-        >
+        <View style={styles.fill}>
+          <View style={styles.sheen} />
+          <ScanSweep active={processing || selected} />
           <View style={styles.topRow}>
-            <Text style={[styles.code, { color: agent.accent }]}>{agent.code}</Text>
+            <Text style={[styles.code, { color: lit ? colors.chrome : colors.muted }]}>
+              {agent.code}
+            </Text>
             <View
               style={[
                 styles.led,
                 {
                   backgroundColor: lit ? agent.accent : colors.muted,
-                  opacity: lit ? 1 : 0.35,
+                  opacity: lit ? 1 : 0.28,
                 },
               ]}
             />
           </View>
-
           <View style={styles.mid}>
-            <LifeOrb color={agent.accent} active={lit} />
+            <LifeOrb color={lit ? colors.chrome : colors.muted} active={lit} />
           </View>
-
           <Text style={styles.name} numberOfLines={1}>
             {agent.name}
           </Text>
           <Text style={styles.dept} numberOfLines={1}>
             {agent.department}
           </Text>
-
           <View style={styles.footer}>
             <LivingPulse
-              color={agent.accent}
-              active={status === 'streaming' || status === 'thinking'}
+              color={lit ? colors.chrome : colors.muted}
+              active={processing}
               intensity={activity}
-              bars={4}
+              bars={5}
             />
-            <Text style={[styles.status, { color: lit ? agent.accent : colors.muted }]}>
+            <Text style={[styles.status, { color: lit ? colors.metal : colors.muted }]}>
               {STATUS_LABEL[status]} · L{agent.level}
             </Text>
           </View>
-        </LinearGradient>
+        </View>
       </Pressable>
     </Animated.View>
   );
 }
 
 const styles = StyleSheet.create({
-  wrap: {
-    flex: 1,
-    minHeight: 0,
-  },
+  wrap: { flex: 1, minHeight: 0 },
   pad: {
     flex: 1,
-    borderRadius: radii.pad,
+    borderRadius: 12,
     borderWidth: 1,
-    borderColor: colors.hairline,
+    borderColor: colors.bezel,
     overflow: 'hidden',
-    backgroundColor: colors.pad,
+    backgroundColor: '#08080A',
+  },
+  padSelected: {
+    borderColor: colors.chrome,
+    borderWidth: 1.5,
+    backgroundColor: '#101014',
   },
   fill: {
     flex: 1,
     paddingHorizontal: 8,
     paddingVertical: 7,
     justifyContent: 'space-between',
+    backgroundColor: 'transparent',
+  },
+  sheen: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    height: 12,
+    backgroundColor: 'rgba(255,255,255,0.02)',
+  },
+  scan: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    height: 1.5,
+    backgroundColor: colors.chrome,
   },
   topRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    zIndex: 2,
   },
   code: {
     fontFamily: 'SpaceGrotesk_500Medium',
     fontSize: 9,
-    letterSpacing: 1.2,
-    opacity: 0.9,
+    letterSpacing: 1.4,
   },
-  led: {
-    width: 6,
-    height: 6,
-    borderRadius: 3,
-  },
-  mid: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    flex: 1,
-  },
+  led: { width: 6, height: 6, borderRadius: 3 },
+  mid: { alignItems: 'center', justifyContent: 'center', flex: 1, zIndex: 2 },
   name: {
     fontFamily: 'Syne_700Bold',
     color: colors.ink,
     fontSize: 13,
-    letterSpacing: 0.6,
+    letterSpacing: 0.8,
+    zIndex: 2,
   },
   dept: {
     fontFamily: 'SpaceGrotesk_400Regular',
     color: colors.muted,
     fontSize: 9,
     marginTop: 1,
+    zIndex: 2,
   },
-  footer: {
-    marginTop: 4,
-    gap: 3,
-  },
+  footer: { marginTop: 4, gap: 3, zIndex: 2 },
   status: {
     fontFamily: 'SpaceGrotesk_500Medium',
     fontSize: 8,
-    letterSpacing: 0.8,
+    letterSpacing: 0.9,
   },
 });

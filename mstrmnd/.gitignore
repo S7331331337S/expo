@@ -40,4 +40,8 @@ yarn-error.*
 # generated native folders
 /ios
 /android
-node_modules/
+
+# local secrets (never commit)
+secrets/
+EXPO_TOKEN
+.expo-token

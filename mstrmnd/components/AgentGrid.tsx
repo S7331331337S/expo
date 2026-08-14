@@ -1,11 +1,16 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
 import { DEPARTMENT_AGENTS } from '@/constants/agents';
 import { colors, spacing } from '@/constants/theme';
 import { AgentPad } from '@/components/AgentPad';
 import { useController } from '@/context/ControllerContext';
 
 const COLS = 3;
+
+function Screw() {
+  return <View style={styles.screw} />;
+}
 
 export function AgentGrid() {
   const { selectedId, selectAgent, runtimes } = useController();
@@ -17,9 +22,11 @@ export function AgentGrid() {
 
   return (
     <View style={styles.chassis}>
+      <LinearGradient colors={['#0A0A0C', '#050506', '#000000']} style={StyleSheet.absoluteFill} />
       <View style={styles.screwRow}>
-        <View style={styles.screw} />
-        <View style={styles.screw} />
+        <Screw />
+        <Text style={styles.chassisLabel}>PAD DECK // 3×4</Text>
+        <Screw />
       </View>
       <View style={styles.grid}>
         {rows.map((row, ri) => (
@@ -44,8 +51,8 @@ export function AgentGrid() {
         ))}
       </View>
       <View style={styles.screwRow}>
-        <View style={styles.screw} />
-        <View style={styles.screw} />
+        <Screw />
+        <Screw />
       </View>
     </View>
   );
@@ -54,37 +61,44 @@ export function AgentGrid() {
 const styles = StyleSheet.create({
   chassis: {
     flex: 1,
-    backgroundColor: colors.chassisRaised,
-    borderRadius: 16,
+    borderRadius: 18,
     borderWidth: 1,
     borderColor: colors.bezel,
+    overflow: 'hidden',
     paddingHorizontal: spacing.sm,
-    paddingVertical: spacing.xs,
+    paddingVertical: 6,
     minHeight: 0,
   },
   screwRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    alignItems: 'center',
     paddingHorizontal: 4,
     marginVertical: 2,
   },
+  chassisLabel: {
+    fontFamily: 'SpaceGrotesk_500Medium',
+    color: colors.muted,
+    fontSize: 8,
+    letterSpacing: 2,
+  },
   screw: {
-    width: 6,
-    height: 6,
-    borderRadius: 3,
-    backgroundColor: '#2A313A',
+    width: 7,
+    height: 7,
+    borderRadius: 4,
+    backgroundColor: '#2A2F38',
     borderWidth: 1,
-    borderColor: '#3A4450',
+    borderColor: '#3E4652',
   },
   grid: {
     flex: 1,
-    gap: 6,
+    gap: 7,
     minHeight: 0,
   },
   row: {
     flex: 1,
     flexDirection: 'row',
-    gap: 6,
+    gap: 7,
     minHeight: 0,
   },
 });

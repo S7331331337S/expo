@@ -1,7 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import {
   ActivityIndicator,
-  KeyboardAvoidingView,
   Platform,
   Pressable,
   ScrollView,
@@ -10,13 +9,12 @@ import {
   TextInput,
   View,
 } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
 import { useChat } from '@ai-sdk/react';
 import { DefaultChatTransport } from 'ai';
 import { fetch as expoFetch } from 'expo/fetch';
 import { LivingPulse, LifeOrb } from '@/components/LivingPulse';
 import { useController } from '@/context/ControllerContext';
-import { colors, radii, spacing, brand } from '@/constants/theme';
+import { colors, spacing, brand } from '@/constants/theme';
 import { generateAPIUrl } from '@/utils/api';
 import { streamDemoReply } from '@/utils/demoStream';
 
@@ -103,97 +101,96 @@ export function MainAgentWindow() {
         }));
 
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-      style={styles.shell}
-    >
-      <LinearGradient
-        colors={['#141A22', '#0C1016', '#0A0E13']}
-        style={styles.window}
-      >
-        <Pressable
-          onPress={() => selectAgent('conductor')}
-          style={[
-            styles.header,
-            selectedId === 'conductor' && { borderBottomColor: `${colors.signal}55` },
-          ]}
-        >
-          <LifeOrb color={selectedAgent.accent} active={isStreaming || selectedId === 'conductor'} />
-          <View style={styles.headerText}>
-            <Text style={styles.brandLine}>{brand.wordmark} · main window</Text>
-            <Text style={[styles.agentName, { color: selectedAgent.accent }]}>
-              {selectedAgent.name}
-            </Text>
-            <Text style={styles.role} numberOfLines={1}>
-              {selectedAgent.role}
-            </Text>
-          </View>
-          <View style={styles.meter}>
-            <LivingPulse
-              color={selectedAgent.accent}
-              active={isStreaming}
-              intensity={isStreaming ? 0.95 : 0.4}
-              bars={7}
-            />
-            <Text style={styles.level}>
-              LV {selectedAgent.level} · {selectedAgent.xp} XP
-            </Text>
-          </View>
-        </Pressable>
-
-        <ScrollView
-          style={styles.transcript}
-          contentContainerStyle={styles.transcriptContent}
-          keyboardShouldPersistTaps="handled"
-        >
-          {displayMessages.length === 0 && (
-            <Text style={styles.placeholder}>
-              Hit a pad above, then cue {selectedAgent.name}. Ask about process, priorities, or
-              handoffs across your mastermind grid.
-            </Text>
-          )}
-          {displayMessages.map((m) => (
-            <View
-              key={m.id}
-              style={[styles.bubble, m.role === 'user' ? styles.userBubble : styles.agentBubble]}
-            >
-              <Text style={styles.bubbleRole}>
-                {m.role === 'user' ? 'YOU' : selectedAgent.name}
-              </Text>
-              <Text style={styles.bubbleText}>{m.text}</Text>
-            </View>
-          ))}
-          {isStreaming && (
-            <View style={styles.streamingRow}>
-              <ActivityIndicator color={selectedAgent.accent} size="small" />
-              <Text style={[styles.streamingLabel, { color: selectedAgent.accent }]}>
-                {selectedAgent.name} processing…
-              </Text>
-            </View>
-          )}
-        </ScrollView>
-
-        <View style={styles.inputRow}>
-          <TextInput
-            style={styles.input}
-            placeholder={`Cue ${selectedAgent.name}…`}
-            placeholderTextColor={colors.muted}
-            value={input}
-            onChangeText={setInput}
-            onSubmitEditing={onSend}
-            returnKeyType="send"
-            editable={!isStreaming}
-          />
+    <View style={styles.shell}>
+      <View style={styles.windowShell}>
+        <View style={styles.window}>
           <Pressable
-            onPress={onSend}
-            style={[styles.send, { backgroundColor: selectedAgent.accent }]}
-            disabled={isStreaming || !input.trim()}
+            onPress={() => selectAgent('conductor')}
+            style={[
+              styles.header,
+              selectedId === 'conductor' && { borderBottomColor: `${colors.signal}55` },
+            ]}
           >
-            <Text style={styles.sendLabel}>RUN</Text>
+            <LifeOrb
+              color={colors.chrome}
+              active={isStreaming || selectedId === 'conductor'}
+            />
+            <View style={styles.headerText}>
+              <Text style={styles.brandLine}>{brand.wordmark} · MAIN WINDOW</Text>
+              <Text style={styles.agentName}>{selectedAgent.name}</Text>
+              <Text style={styles.role} numberOfLines={1}>
+                {selectedAgent.role}
+              </Text>
+            </View>
+            <View style={styles.meter}>
+              <LivingPulse
+                color={colors.chrome}
+                active={isStreaming}
+                intensity={isStreaming ? 0.95 : 0.42}
+                bars={7}
+              />
+              <Text style={styles.level}>
+                LV {selectedAgent.level} · {selectedAgent.xp} XP
+              </Text>
+            </View>
           </Pressable>
+
+          <ScrollView
+            style={styles.transcript}
+            contentContainerStyle={styles.transcriptContent}
+            keyboardShouldPersistTaps="handled"
+            keyboardDismissMode="interactive"
+          >
+            {displayMessages.length === 0 && (
+              <Text style={styles.placeholder}>
+                Hit a pad above, then cue {selectedAgent.name}. Ask about process, priorities, or
+                handoffs across your mastermind grid.
+              </Text>
+            )}
+            {displayMessages.map((m) => (
+              <View
+                key={m.id}
+                style={[styles.bubble, m.role === 'user' ? styles.userBubble : styles.agentBubble]}
+              >
+                <Text style={styles.bubbleRole}>
+                  {m.role === 'user' ? 'YOU' : selectedAgent.name}
+                </Text>
+                <Text style={styles.bubbleText}>{m.text}</Text>
+              </View>
+            ))}
+            {isStreaming && (
+              <View style={styles.streamingRow}>
+                <ActivityIndicator color={colors.chrome} size="small" />
+                <Text style={styles.streamingLabel}>
+                  {selectedAgent.name} processing…
+                </Text>
+              </View>
+            )}
+          </ScrollView>
+
+          <View style={styles.inputRow}>
+            <TextInput
+              style={styles.input}
+              placeholder={`Cue ${selectedAgent.name}…`}
+              placeholderTextColor={colors.muted}
+              value={input}
+              onChangeText={setInput}
+              onSubmitEditing={onSend}
+              returnKeyType="send"
+              editable={!isStreaming}
+              blurOnSubmit={false}
+            />
+            <Pressable
+              onPress={onSend}
+              style={[styles.send, (!input.trim() || isStreaming) && styles.sendDisabled]}
+              disabled={isStreaming || !input.trim()}
+            >
+              <Text style={styles.sendLabel}>RUN</Text>
+            </Pressable>
+          </View>
         </View>
-      </LinearGradient>
-    </KeyboardAvoidingView>
+      </View>
+    </View>
   );
 }
 
@@ -202,19 +199,24 @@ const styles = StyleSheet.create({
     flex: 1,
     minHeight: 0,
   },
+  windowShell: {
+    flex: 1,
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: colors.bezelHot,
+    overflow: 'hidden',
+    backgroundColor: '#050507',
+  },
   window: {
     flex: 1,
-    borderRadius: radii.window,
-    borderWidth: 1,
-    borderColor: colors.bezel,
-    overflow: 'hidden',
+    backgroundColor: '#050507',
   },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: spacing.sm,
+    gap: 10,
     paddingHorizontal: spacing.md,
-    paddingVertical: spacing.sm,
+    paddingVertical: 10,
     borderBottomWidth: 1,
     borderBottomColor: colors.hairline,
   },
@@ -223,25 +225,26 @@ const styles = StyleSheet.create({
     minWidth: 0,
   },
   brandLine: {
-    fontFamily: 'SpaceGrotesk_400Regular',
+    fontFamily: 'SpaceGrotesk_500Medium',
     color: colors.muted,
     fontSize: 9,
     letterSpacing: 2.2,
-    textTransform: 'uppercase',
   },
   agentName: {
-    fontFamily: 'Syne_700Bold',
-    fontSize: 18,
-    letterSpacing: 0.5,
+    fontFamily: 'Syne_800ExtraBold',
+    fontSize: 20,
+    letterSpacing: 0.8,
+    marginTop: 1,
+    color: colors.chromeHot,
   },
   role: {
     fontFamily: 'SpaceGrotesk_400Regular',
     color: colors.metal,
     fontSize: 11,
-    marginTop: 1,
+    marginTop: 2,
   },
   meter: {
-    width: 88,
+    width: 86,
     alignItems: 'flex-end',
     gap: 4,
   },
@@ -249,7 +252,7 @@ const styles = StyleSheet.create({
     fontFamily: 'SpaceGrotesk_500Medium',
     color: colors.muted,
     fontSize: 8,
-    letterSpacing: 0.6,
+    letterSpacing: 0.7,
   },
   transcript: {
     flex: 1,
@@ -262,30 +265,30 @@ const styles = StyleSheet.create({
     fontFamily: 'SpaceGrotesk_400Regular',
     color: colors.muted,
     fontSize: 13,
-    lineHeight: 19,
+    lineHeight: 20,
   },
   bubble: {
-    borderRadius: 10,
-    padding: spacing.sm,
+    borderRadius: 12,
+    padding: 10,
     borderWidth: 1,
   },
   userBubble: {
     alignSelf: 'flex-end',
-    backgroundColor: '#1A2430',
+    backgroundColor: '#101014',
     borderColor: colors.hairline,
     maxWidth: '88%',
   },
   agentBubble: {
     alignSelf: 'flex-start',
-    backgroundColor: '#12181F',
-    borderColor: '#243040',
+    backgroundColor: '#0A0A0C',
+    borderColor: '#1A1A1E',
     maxWidth: '92%',
   },
   bubbleRole: {
-    fontFamily: 'SpaceGrotesk_500Medium',
+    fontFamily: 'SpaceGrotesk_700Bold',
     color: colors.muted,
     fontSize: 9,
-    letterSpacing: 1,
+    letterSpacing: 1.2,
     marginBottom: 4,
   },
   bubbleText: {
@@ -303,11 +306,12 @@ const styles = StyleSheet.create({
     fontFamily: 'SpaceGrotesk_500Medium',
     fontSize: 11,
     letterSpacing: 0.4,
+    color: colors.metal,
   },
   inputRow: {
     flexDirection: 'row',
     gap: 8,
-    padding: spacing.sm,
+    padding: 10,
     borderTopWidth: 1,
     borderTopColor: colors.hairline,
     backgroundColor: colors.recess,
@@ -316,24 +320,28 @@ const styles = StyleSheet.create({
     flex: 1,
     fontFamily: 'SpaceGrotesk_400Regular',
     color: colors.ink,
-    backgroundColor: colors.pad,
-    borderRadius: 10,
+    backgroundColor: '#0A0A0C',
+    borderRadius: 12,
     borderWidth: 1,
     borderColor: colors.bezel,
-    paddingHorizontal: 12,
-    paddingVertical: Platform.OS === 'ios' ? 12 : 8,
+    paddingHorizontal: 14,
+    paddingVertical: Platform.OS === 'ios' ? 13 : 9,
     fontSize: 14,
   },
   send: {
-    borderRadius: 10,
-    paddingHorizontal: 16,
+    borderRadius: 12,
+    paddingHorizontal: 18,
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor: colors.chrome,
+  },
+  sendDisabled: {
+    opacity: 0.35,
   },
   sendLabel: {
-    fontFamily: 'Syne_700Bold',
+    fontFamily: 'Syne_800ExtraBold',
     color: '#0A0C0E',
     fontSize: 13,
-    letterSpacing: 1,
+    letterSpacing: 1.2,
   },
 });
