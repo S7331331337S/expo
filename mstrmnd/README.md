@@ -1,18 +1,23 @@
 # MSTRMND
 
-Tuned mastermind agent controller for Expo (SDK 57).
+The operating layer for AI systems.
 
-Official brand mark is the metallic tetrahedron. Splash / chrome use **M S T R M N D** with the tagline *Building intelligent systems. Empowering human potential.*
+Expo (SDK 57) controller. Official mark is the metallic tetrahedron. Copy uses **MSTRMND** with that single tagline.
 
-The full screen is a MIDI-style drum-pad grid: **12 department agents** in a **3×4** layout, with a **CONDUCTOR** main window consuming the lower third. Pads are gamified (level / XP / status) and animated so active agents feel alive.
+Three beats:
+
+1. **Welcome** — mark, wordmark, tagline, Enter System
+2. **Home** — command list (Create Plan, Research, Build System, Analyze, Connect Tools, Evolve)
+3. **Hub** — one integrations ring
+
+The MIDI-style **Systems** deck (12 department pads + CONDUCTOR) is still the instrument behind those commands.
 
 ## Stack
 
 - Expo SDK 57 + Expo Router
 - Vercel AI SDK (`ai` + `@ai-sdk/react`) with `expo/fetch` streaming
-- Reanimated living pulses / orbs + SVG brand mark
-- Syne + Space Grotesk typography
-- Native splash + branded boot overlay
+- Reanimated pulses + SVG brand mark
+- Syne + Space Grotesk
 
 ## Run
 
@@ -34,14 +39,13 @@ node scripts/generate-brand-assets.mjs
 2. Set `AI_GATEWAY_API_KEY` (Vercel AI Gateway)
 3. Optionally set `EXPO_PUBLIC_AI_GATEWAY_API_KEY=1` so the client prefers the API over the demo stream
 
-Without a key, tapping **RUN** uses a local character-stream demo so the pad deck still feels alive.
+Without a key, cues use a local character-stream demo.
 
 ## Layout
 
-| Zone | Role |
-|------|------|
-| Top brand bar | Tetrahedron mark + `M S T R M N D` + session LED |
-| Pad deck (~2/3) | 12 department pads (STRAT → BRAND) |
-| Main window (~1/3) | Active agent transcript + cue input |
-
-Tap a pad to focus it in the main window. Tap the main header to return to **CONDUCTOR**.
+| Screen | Role |
+|--------|------|
+| Welcome | Tetrahedron + tagline + **Enter System** |
+| Home | Six commands + cue field |
+| Hub | Integration orbit |
+| Systems | 12 department pads + main window |

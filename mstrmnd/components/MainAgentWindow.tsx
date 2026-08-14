@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import {
   ActivityIndicator,
   KeyboardAvoidingView,
@@ -28,7 +28,7 @@ function messageText(parts: { type: string; text?: string }[]): string {
 }
 
 export function MainAgentWindow() {
-  const { selectedAgent, selectedId, setAgentStatus, selectAgent } = useController();
+  const { selectedAgent, selectedId, setAgentStatus, selectAgent, pendingCue, consumePendingCue } = useController();
   const [input, setInput] = useState('');
   const [demoMessages, setDemoMessages] = useState<
     { id: string; role: 'user' | 'assistant'; text: string }[]
@@ -61,13 +61,25 @@ export function MainAgentWindow() {
     setAgentStatus(selectedId, isStreaming ? 'streaming' : 'listening');
   }, [isStreaming, selectedId, setAgentStatus]);
 
+  const prevSelected = useRef(selectedId);
   useEffect(() => {
+    if (prevSelected.current === selectedId) return;
+    prevSelected.current = selectedId;
     setDemoMessages([]);
     setMessages([]);
   }, [selectedId, setMessages]);
 
-  const onSend = async () => {
-    const text = input.trim();
+  useEffect(() => {
+    if (!pendingCue) return;
+    const text = consumePendingCue();
+    if (text) {
+      void onSend(text);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- fire once per queued cue
+  }, [pendingCue]);
+
+  const onSend = async (raw?: string) => {
+    const text = (raw ?? input).trim();
     if (!text || isStreaming) return;
     setInput('');
 
@@ -148,8 +160,7 @@ export function MainAgentWindow() {
         >
           {displayMessages.length === 0 && (
             <Text style={styles.placeholder}>
-              Hit a pad above, then cue {selectedAgent.name}. Ask about process, priorities, or
-              handoffs across your mastermind grid.
+              Cue {selectedAgent.name}. Ask for a plan, a research pass, or a system to stand up.
             </Text>
           )}
           {displayMessages.map((m) => (
@@ -180,12 +191,12 @@ export function MainAgentWindow() {
             placeholderTextColor={colors.muted}
             value={input}
             onChangeText={setInput}
-            onSubmitEditing={onSend}
+            onSubmitEditing={() => onSend()}
             returnKeyType="send"
             editable={!isStreaming}
           />
           <Pressable
-            onPress={onSend}
+            onPress={() => onSend()}
             style={[styles.send, { backgroundColor: selectedAgent.accent }]}
             disabled={isStreaming || !input.trim()}
           >

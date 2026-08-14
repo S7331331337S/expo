@@ -1,5 +1,5 @@
-import '../polyfills';
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect } from 'react';
+import { StyleSheet } from 'react-native';
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import * as SplashScreen from 'expo-splash-screen';
@@ -14,16 +14,13 @@ import {
   SpaceGrotesk_700Bold,
 } from '@expo-google-fonts/space-grotesk';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { StyleSheet } from 'react-native';
 import { ControllerProvider } from '@/context/ControllerContext';
 import { MobileShell } from '@/components/MobileShell';
-import { SplashOverlay } from '@/components/SplashOverlay';
 import { colors } from '@/constants/theme';
 
 SplashScreen.preventAutoHideAsync().catch(() => undefined);
 
 export default function RootLayout() {
-  const [showBrandSplash, setShowBrandSplash] = useState(true);
   const [fontsLoaded] = useFonts({
     Syne_700Bold,
     Syne_800ExtraBold,
@@ -37,8 +34,6 @@ export default function RootLayout() {
       SplashScreen.hideAsync().catch(() => undefined);
     }
   }, [fontsLoaded]);
-
-  const onSplashDone = useCallback(() => setShowBrandSplash(false), []);
 
   if (!fontsLoaded) {
     return null;
@@ -56,7 +51,6 @@ export default function RootLayout() {
               animation: 'fade',
             }}
           />
-          <SplashOverlay visible={showBrandSplash} onDone={onSplashDone} />
         </ControllerProvider>
       </MobileShell>
     </GestureHandlerRootView>
