@@ -1,7 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import {
   ActivityIndicator,
-  KeyboardAvoidingView,
   Platform,
   Pressable,
   ScrollView,
@@ -10,7 +9,6 @@ import {
   TextInput,
   View,
 } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
 import { useChat } from '@ai-sdk/react';
 import { DefaultChatTransport } from 'ai';
 import { fetch as expoFetch } from 'expo/fetch';
@@ -103,12 +101,9 @@ export function MainAgentWindow() {
         }));
 
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-      style={styles.shell}
-    >
+    <View style={styles.shell}>
       <View style={styles.windowShell}>
-        <LinearGradient colors={['#1A222C', '#0E1319', '#0A0E13']} style={styles.window}>
+        <View style={styles.window}>
           <Pressable
             onPress={() => selectAgent('conductor')}
             style={[
@@ -117,21 +112,19 @@ export function MainAgentWindow() {
             ]}
           >
             <LifeOrb
-              color={selectedAgent.accent}
+              color={colors.chrome}
               active={isStreaming || selectedId === 'conductor'}
             />
             <View style={styles.headerText}>
               <Text style={styles.brandLine}>{brand.wordmark} · MAIN WINDOW</Text>
-              <Text style={[styles.agentName, { color: selectedAgent.accent }]}>
-                {selectedAgent.name}
-              </Text>
+              <Text style={styles.agentName}>{selectedAgent.name}</Text>
               <Text style={styles.role} numberOfLines={1}>
                 {selectedAgent.role}
               </Text>
             </View>
             <View style={styles.meter}>
               <LivingPulse
-                color={selectedAgent.accent}
+                color={colors.chrome}
                 active={isStreaming}
                 intensity={isStreaming ? 0.95 : 0.42}
                 bars={7}
@@ -146,6 +139,7 @@ export function MainAgentWindow() {
             style={styles.transcript}
             contentContainerStyle={styles.transcriptContent}
             keyboardShouldPersistTaps="handled"
+            keyboardDismissMode="interactive"
           >
             {displayMessages.length === 0 && (
               <Text style={styles.placeholder}>
@@ -166,8 +160,8 @@ export function MainAgentWindow() {
             ))}
             {isStreaming && (
               <View style={styles.streamingRow}>
-                <ActivityIndicator color={selectedAgent.accent} size="small" />
-                <Text style={[styles.streamingLabel, { color: selectedAgent.accent }]}>
+                <ActivityIndicator color={colors.chrome} size="small" />
+                <Text style={styles.streamingLabel}>
                   {selectedAgent.name} processing…
                 </Text>
               </View>
@@ -184,18 +178,19 @@ export function MainAgentWindow() {
               onSubmitEditing={onSend}
               returnKeyType="send"
               editable={!isStreaming}
+              blurOnSubmit={false}
             />
             <Pressable
               onPress={onSend}
-              style={[styles.send, { backgroundColor: selectedAgent.accent }]}
+              style={[styles.send, (!input.trim() || isStreaming) && styles.sendDisabled]}
               disabled={isStreaming || !input.trim()}
             >
               <Text style={styles.sendLabel}>RUN</Text>
             </Pressable>
           </View>
-        </LinearGradient>
+        </View>
       </View>
-    </KeyboardAvoidingView>
+    </View>
   );
 }
 
@@ -210,9 +205,11 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: colors.bezelHot,
     overflow: 'hidden',
+    backgroundColor: '#0E1319',
   },
   window: {
     flex: 1,
+    backgroundColor: '#0E1319',
   },
   header: {
     flexDirection: 'row',
@@ -238,6 +235,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     letterSpacing: 0.8,
     marginTop: 1,
+    color: colors.chromeHot,
   },
   role: {
     fontFamily: 'SpaceGrotesk_400Regular',
@@ -308,6 +306,7 @@ const styles = StyleSheet.create({
     fontFamily: 'SpaceGrotesk_500Medium',
     fontSize: 11,
     letterSpacing: 0.4,
+    color: colors.metal,
   },
   inputRow: {
     flexDirection: 'row',
@@ -334,6 +333,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: 18,
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor: colors.chrome,
+  },
+  sendDisabled: {
+    opacity: 0.35,
   },
   sendLabel: {
     fontFamily: 'Syne_800ExtraBold',

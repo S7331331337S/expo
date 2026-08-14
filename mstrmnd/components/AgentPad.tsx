@@ -10,7 +10,6 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated';
 import * as Haptics from 'expo-haptics';
-import { LinearGradient } from 'expo-linear-gradient';
 import type { DepartmentAgent, AgentStatus } from '@/constants/agents';
 import { colors } from '@/constants/theme';
 import { LifeOrb, LivingPulse } from '@/components/LivingPulse';
@@ -31,7 +30,7 @@ const STATUS_LABEL: Record<AgentStatus, string> = {
   alert: 'ALERT',
 };
 
-function ScanSweep({ color, active }: { color: string; active: boolean }) {
+function ScanSweep({ active }: { active: boolean }) {
   const y = useSharedValue(0);
   useEffect(() => {
     if (!active) return;
@@ -42,9 +41,8 @@ function ScanSweep({ color, active }: { color: string; active: boolean }) {
     );
   }, [active, y]);
   const style = useAnimatedStyle(() => ({
-    opacity: active ? 0.35 : 0,
+    opacity: active ? 0.28 : 0,
     transform: [{ translateY: interpolate(y.value, [0, 1], [2, 52]) }],
-    backgroundColor: color,
   }));
   if (!active) return null;
   return <Animated.View pointerEvents="none" style={[styles.scan, style]} />;
@@ -78,45 +76,28 @@ export function AgentPad({ agent, selected, status, activity, onPress }: Props) 
         }}
         style={[
           styles.pad,
-          selected && { borderColor: agent.accent, borderWidth: 1.5 },
-          lit && {
-            shadowColor: agent.accent,
-            shadowOpacity: selected ? 0.45 : 0.22,
-            shadowRadius: selected ? 14 : 8,
-          },
+          selected && styles.padSelected,
         ]}
       >
-        <LinearGradient
-          colors={
-            selected
-              ? ['#1C2430', '#10151C', `${agent.accent}33`]
-              : lit
-                ? ['#191E28', '#0F1319', `${agent.accent}18`]
-                : ['#151820', '#0C0E13']
-          }
-          start={{ x: 0, y: 0 }}
-          end={{ x: 1, y: 1 }}
-          style={styles.fill}
-        >
+        <View style={styles.fill}>
           <View style={styles.sheen} />
-          <ScanSweep color={agent.accent} active={processing || selected} />
+          <ScanSweep active={processing || selected} />
           <View style={styles.topRow}>
-            <Text style={[styles.code, { color: agent.accent }]}>{agent.code}</Text>
+            <Text style={[styles.code, { color: lit ? colors.chrome : colors.muted }]}>
+              {agent.code}
+            </Text>
             <View
               style={[
                 styles.led,
                 {
                   backgroundColor: lit ? agent.accent : colors.muted,
-                  opacity: lit ? 1 : 0.3,
-                  shadowColor: agent.accent,
-                  shadowOpacity: lit ? 0.8 : 0,
-                  shadowRadius: 4,
+                  opacity: lit ? 1 : 0.28,
                 },
               ]}
             />
           </View>
           <View style={styles.mid}>
-            <LifeOrb color={agent.accent} active={lit} />
+            <LifeOrb color={lit ? colors.chrome : colors.muted} active={lit} />
           </View>
           <Text style={styles.name} numberOfLines={1}>
             {agent.name}
@@ -126,16 +107,16 @@ export function AgentPad({ agent, selected, status, activity, onPress }: Props) 
           </Text>
           <View style={styles.footer}>
             <LivingPulse
-              color={agent.accent}
+              color={lit ? colors.chrome : colors.muted}
               active={processing}
               intensity={activity}
               bars={5}
             />
-            <Text style={[styles.status, { color: lit ? agent.accent : colors.muted }]}>
+            <Text style={[styles.status, { color: lit ? colors.metal : colors.muted }]}>
               {STATUS_LABEL[status]} · L{agent.level}
             </Text>
           </View>
-        </LinearGradient>
+        </View>
       </Pressable>
     </Animated.View>
   );
@@ -147,29 +128,36 @@ const styles = StyleSheet.create({
     flex: 1,
     borderRadius: 12,
     borderWidth: 1,
-    borderColor: colors.hairline,
+    borderColor: colors.bezel,
     overflow: 'hidden',
-    backgroundColor: colors.pad,
+    backgroundColor: '#12151A',
+  },
+  padSelected: {
+    borderColor: colors.chrome,
+    borderWidth: 1.5,
+    backgroundColor: '#1A1D24',
   },
   fill: {
     flex: 1,
     paddingHorizontal: 8,
     paddingVertical: 7,
     justifyContent: 'space-between',
+    backgroundColor: 'transparent',
   },
   sheen: {
     position: 'absolute',
     top: 0,
     left: 0,
     right: 0,
-    height: 18,
-    backgroundColor: 'rgba(255,255,255,0.04)',
+    height: 14,
+    backgroundColor: 'rgba(255,255,255,0.03)',
   },
   scan: {
     position: 'absolute',
     left: 0,
     right: 0,
     height: 1.5,
+    backgroundColor: colors.chrome,
   },
   topRow: {
     flexDirection: 'row',
