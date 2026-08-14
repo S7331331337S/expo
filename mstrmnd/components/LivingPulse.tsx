@@ -31,7 +31,7 @@ export function LivingPulse({
   useEffect(() => {
     phase.value = withRepeat(
       withTiming(1, {
-        duration: active ? 900 : 2400,
+        duration: active ? 780 : 2200,
         easing: Easing.inOut(Easing.sin),
       }),
       -1,
@@ -40,8 +40,8 @@ export function LivingPulse({
   }, [active, phase]);
 
   useEffect(() => {
-    glow.value = withTiming(active ? Math.max(intensity, 0.65) : intensity * 0.5, {
-      duration: 400,
+    glow.value = withTiming(active ? Math.max(intensity, 0.72) : intensity * 0.45, {
+      duration: 350,
     });
   }, [active, intensity, glow]);
 
@@ -75,13 +75,13 @@ function PulseBar({
   active: boolean;
 }) {
   const style = useAnimatedStyle(() => {
-    const offset = index * 0.17;
+    const offset = index * 0.15;
     const wave = Math.sin((phase.value + offset) * Math.PI * 2);
-    const base = active ? 0.35 : 0.18;
-    const height = interpolate(wave, [-1, 1], [base, base + glow.value * 0.7]);
+    const base = active ? 0.28 : 0.14;
+    const height = interpolate(wave, [-1, 1], [base, base + glow.value * 0.78]);
     return {
       height: `${Math.round(height * 100)}%`,
-      opacity: 0.35 + glow.value * 0.55,
+      opacity: 0.3 + glow.value * 0.65,
       backgroundColor: color,
     };
   });
@@ -97,51 +97,54 @@ type OrbProps = {
 export function LifeOrb({ color, active }: OrbProps) {
   const pulse = useSharedValue(0);
   const spin = useSharedValue(0);
+  const bloom = useSharedValue(active ? 1 : 0.35);
 
   useEffect(() => {
     pulse.value = withRepeat(
       withSequence(
-        withTiming(1, { duration: active ? 700 : 1600 }),
-        withTiming(0, { duration: active ? 700 : 1600 }),
+        withTiming(1, { duration: active ? 650 : 1500 }),
+        withTiming(0, { duration: active ? 650 : 1500 }),
       ),
       -1,
       false,
     );
     spin.value = withRepeat(
-      withTiming(1, { duration: active ? 3200 : 8000, easing: Easing.linear }),
+      withTiming(1, { duration: active ? 2800 : 9000, easing: Easing.linear }),
       -1,
       false,
     );
-  }, [active, pulse, spin]);
+    bloom.value = withTiming(active ? 1 : 0.35, { duration: 400 });
+  }, [active, pulse, spin, bloom]);
+
+  const halo = useAnimatedStyle(() => ({
+    transform: [{ scale: 0.9 + pulse.value * 0.35 }],
+    opacity: 0.12 + bloom.value * 0.28,
+    backgroundColor: color,
+  }));
 
   const core = useAnimatedStyle(() => ({
-    transform: [{ scale: 0.85 + pulse.value * 0.28 }],
-    opacity: 0.55 + pulse.value * 0.4,
+    transform: [{ scale: 0.82 + pulse.value * 0.3 }],
+    opacity: 0.55 + pulse.value * 0.45,
     backgroundColor: color,
     shadowColor: color,
-    shadowOpacity: 0.55 + pulse.value * 0.35,
-    shadowRadius: 8 + pulse.value * 10,
+    shadowOpacity: 0.45 + bloom.value * 0.4,
+    shadowRadius: 10 + pulse.value * 12,
   }));
 
   const ring = useAnimatedStyle(() => ({
     transform: [
       { rotate: `${spin.value * 360}deg` },
-      { scale: 0.95 + pulse.value * 0.12 },
+      { scale: 0.92 + pulse.value * 0.14 },
     ],
     borderColor: color,
-    opacity: active ? 0.7 : 0.25,
-  }));
-
-  const spark = useAnimatedStyle(() => ({
-    opacity: 0.35 + pulse.value * 0.65,
-    transform: [{ translateY: interpolate(pulse.value, [0, 1], [4, -6]) }],
+    opacity: 0.25 + bloom.value * 0.55,
   }));
 
   return (
     <View style={styles.orbWrap}>
+      <Animated.View style={[styles.halo, halo]} />
       <Animated.View style={[styles.ring, ring]} />
       <Animated.View style={[styles.core, core]} />
-      <Animated.View style={[styles.spark, spark, { backgroundColor: color }]} />
     </View>
   );
 }
@@ -152,7 +155,7 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end',
     justifyContent: 'center',
     gap: 3,
-    height: 18,
+    height: 16,
     width: '100%',
   },
   bar: {
@@ -161,10 +164,16 @@ const styles = StyleSheet.create({
     minHeight: 3,
   },
   orbWrap: {
-    width: 28,
-    height: 28,
+    width: 34,
+    height: 34,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  halo: {
+    position: 'absolute',
+    width: 30,
+    height: 30,
+    borderRadius: 15,
   },
   core: {
     width: 12,
@@ -173,18 +182,10 @@ const styles = StyleSheet.create({
   },
   ring: {
     position: 'absolute',
-    width: 26,
-    height: 26,
-    borderRadius: 13,
+    width: 28,
+    height: 28,
+    borderRadius: 14,
     borderWidth: 1.5,
     borderStyle: 'dashed',
-  },
-  spark: {
-    position: 'absolute',
-    top: 2,
-    right: 4,
-    width: 4,
-    height: 4,
-    borderRadius: 2,
   },
 });

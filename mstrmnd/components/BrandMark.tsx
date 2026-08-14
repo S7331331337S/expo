@@ -1,4 +1,4 @@
-import Svg, { Defs, LinearGradient, Path, Stop } from 'react-native-svg';
+import Svg, { Circle, Defs, LinearGradient, Path, Stop } from 'react-native-svg';
 
 type Weight = 'regular' | 'bold';
 type Tone = 'chrome' | 'solid';
@@ -66,6 +66,7 @@ export function BrandMark({
         strokeLinecap="round"
         strokeLinejoin="round"
       />
+      <Circle cx={cx} cy={cy} r={2.2} fill="#F5F7FA" opacity={0.9} />
     </Svg>
   );
 }

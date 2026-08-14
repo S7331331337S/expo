@@ -13,14 +13,14 @@ export default function ControllerScreen() {
   return (
     <View style={styles.root}>
       <LinearGradient
-        colors={['#101014', '#070708', '#000000']}
+        colors={['#12141A', '#07080A', '#000000']}
         locations={[0, 0.5, 1]}
         style={StyleSheet.absoluteFill}
       />
       <SafeAreaView style={styles.safe} edges={['top', 'left', 'right']}>
         <View style={styles.topBar}>
           <View>
-            <BrandLockup markSize={26} compact />
+            <BrandLockup markSize={28} compact />
             <Text style={styles.sub}>agent controller</Text>
           </View>
           <View style={styles.session}>

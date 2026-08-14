@@ -5,6 +5,7 @@ import Animated, {
   useAnimatedStyle,
   useSharedValue,
   withDelay,
+  withSpring,
   withTiming,
 } from 'react-native-reanimated';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -18,28 +19,25 @@ type Props = {
 
 export function SplashOverlay({ visible, onDone }: Props) {
   const opacity = useSharedValue(1);
-  const brandY = useSharedValue(24);
+  const brandY = useSharedValue(28);
   const brandOp = useSharedValue(0);
-  const markScale = useSharedValue(0.84);
+  const markScale = useSharedValue(0.82);
   const pillars = useSharedValue(0);
 
   useEffect(() => {
     if (!visible) return;
-    brandOp.value = withDelay(160, withTiming(1, { duration: 850 }));
+    brandOp.value = withDelay(120, withTiming(1, { duration: 850 }));
     brandY.value = withDelay(
-      160,
+      120,
       withTiming(0, { duration: 950, easing: Easing.out(Easing.cubic) }),
     );
-    markScale.value = withDelay(
-      100,
-      withTiming(1, { duration: 1050, easing: Easing.out(Easing.cubic) }),
-    );
-    pillars.value = withDelay(750, withTiming(1, { duration: 700 }));
+    markScale.value = withDelay(80, withSpring(1, { damping: 14, stiffness: 120 }));
+    pillars.value = withDelay(700, withTiming(1, { duration: 700 }));
 
     const t = setTimeout(() => {
       opacity.value = withTiming(0, { duration: 600 });
       setTimeout(onDone, 620);
-    }, 2800);
+    }, 2600);
 
     return () => clearTimeout(t);
   }, [visible, opacity, brandOp, brandY, markScale, pillars, onDone]);
@@ -60,22 +58,24 @@ export function SplashOverlay({ visible, onDone }: Props) {
   return (
     <Animated.View style={[styles.root, root]} pointerEvents="none">
       <LinearGradient
-        colors={['#000000', '#0A0A0C', '#000000']}
+        colors={['#000000', '#0A0B0E', '#000000']}
         locations={[0, 0.45, 1]}
         style={StyleSheet.absoluteFill}
       />
-      {/* soft spotlight */}
       <LinearGradient
-        colors={['rgba(255,255,255,0.07)', 'rgba(255,255,255,0.0)']}
+        colors={['rgba(255,255,255,0.09)', 'rgba(255,255,255,0.02)', 'transparent']}
         style={styles.spot}
       />
-      <View style={styles.center}>
-        <Animated.View style={mark}>
-          <BrandMark size={108} glow weight="bold" tone="chrome" />
-        </Animated.View>
-        <Animated.Text style={[styles.wordmark, copy]}>{brand.wordmark}</Animated.Text>
-        <Animated.Text style={[styles.tagline, copy]}>{brand.tagline}</Animated.Text>
-      </View>
+      <Animated.View style={[styles.markWrap, mark]}>
+        <BrandMark size={112} glow weight="bold" tone="chrome" />
+      </Animated.View>
+      <Animated.View style={[styles.copy, copy]}>
+        <Text style={styles.wordmark}>{brand.wordmark}</Text>
+        <View style={styles.rule} />
+        <Text style={styles.tagline}>
+          Building intelligent systems.{'\n'}Empowering human potential.
+        </Text>
+      </Animated.View>
       <Animated.Text style={[styles.pillars, footer]}>
         {brand.pillars.map((p) => p.toUpperCase()).join('  ·  ')}
       </Animated.Text>
@@ -97,33 +97,42 @@ const styles = StyleSheet.create({
   },
   spot: {
     position: 'absolute',
-    top: '18%',
-    left: '15%',
-    right: '15%',
-    height: '42%',
+    top: '12%',
+    left: '10%',
+    right: '10%',
+    height: '48%',
     borderRadius: 999,
   },
-  center: {
+  markWrap: {
     alignItems: 'center',
-    gap: 20,
+  },
+  copy: {
+    alignItems: 'center',
+    marginTop: 22,
+    gap: 12,
     paddingHorizontal: 28,
   },
   wordmark: {
     fontFamily: 'Syne_800ExtraBold',
-    fontSize: 40,
+    fontSize: 42,
     color: colors.chromeHot,
-    letterSpacing: 8,
-    marginTop: 4,
+    letterSpacing: 9,
+  },
+  rule: {
+    width: 72,
+    height: 2,
+    borderRadius: 1,
+    backgroundColor: colors.chrome,
+    opacity: 0.55,
   },
   tagline: {
     fontFamily: 'SpaceGrotesk_400Regular',
     color: colors.metal,
     fontSize: 11,
-    letterSpacing: 1.2,
+    letterSpacing: 1.3,
     textAlign: 'center',
     textTransform: 'uppercase',
     lineHeight: 18,
-    maxWidth: 320,
   },
   pillars: {
     position: 'absolute',
@@ -131,6 +140,6 @@ const styles = StyleSheet.create({
     fontFamily: 'SpaceGrotesk_500Medium',
     color: colors.muted,
     fontSize: 9,
-    letterSpacing: 2.4,
+    letterSpacing: 2.6,
   },
 });
