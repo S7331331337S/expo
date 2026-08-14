@@ -3,8 +3,7 @@ export const brand = {
   name: 'MSTRMND',
   /** Continuous wordmark — use letterSpacing in UI, not literal spaces */
   wordmark: 'MSTRMND',
-  tagline: 'Building intelligent systems. Empowering human potential.',
-  pillars: ['Research', 'Technology', 'Systems', 'Future'] as const,
+  tagline: 'The operating layer for AI systems',
 } as const;
 
 export const colors = {
@@ -23,6 +22,7 @@ export const colors = {
   muted: '#7A8088',
   /** Brand signal — silver */
   signal: '#C8CDD4',
+  live: '#7CFF6B',
   amber: '#FFB020',
   cyan: '#3DDCFF',
   coral: '#FF6B4A',
@@ -41,5 +41,6 @@ export const spacing = {
 export const radii = {
   pad: 10,
   window: 14,
+  card: 16,
   pill: 999,
 } as const;
