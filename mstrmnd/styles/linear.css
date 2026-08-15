@@ -14,7 +14,7 @@
   --linear-glass-tint: rgba(255, 255, 255, 0.03);
   --linear-glass-tint-soft: rgba(255, 255, 255, 0.01);
   --linear-glass-fallback: rgba(18, 18, 20, 0.85);
-  --linear-accent-glow: rgba(94, 106, 210, 0.15);
+  --linear-accent-glow: rgba(94, 106, 210, 0.22);
   --linear-overlay: rgba(0, 0, 0, 0.5);
   --linear-shimmer-start: #ffffff;
   --linear-shimmer-end: #a3a3a3;

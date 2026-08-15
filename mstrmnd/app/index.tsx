@@ -1,36 +1,36 @@
 import { StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { AgentGrid } from '@/components/AgentGrid';
-import { BrandLockup } from '@/components/BrandLockup';
+import { useRouter, type Href } from 'expo-router';
+import { BrandMark } from '@/components/BrandMark';
 import { CinematicBackground } from '@/components/CinematicBackground';
-import { MainAgentWindow } from '@/components/MainAgentWindow';
-import { colors, fonts, spacing } from '@/constants/theme';
-import { useController } from '@/context/ControllerContext';
+import { DotGrid } from '@/components/DotGrid';
+import { PillButton } from '@/components/PillButton';
+import { brand, colors, fonts } from '@/constants/theme';
 
-export default function ControllerScreen() {
-  const { selectedAgent } = useController();
+export default function WelcomeScreen() {
+  const router = useRouter();
 
   return (
     <View style={styles.root}>
-      <CinematicBackground />
-      <SafeAreaView style={styles.safe} edges={['top', 'left', 'right']}>
-        <View style={styles.topBar}>
-          <View>
-            <BrandLockup markSize={26} compact />
-            <Text style={styles.sub}>agent controller</Text>
+      <CinematicBackground glowHeight={420} />
+      <DotGrid />
+      <SafeAreaView style={styles.safe} edges={['top', 'left', 'right', 'bottom']}>
+        <View style={styles.hero}>
+          <View style={styles.markWell}>
+            <View style={styles.halo} />
+            <BrandMark size={88} glow weight="bold" tone="chrome" />
           </View>
-          <View style={styles.session}>
-            <View style={[styles.dot, { backgroundColor: selectedAgent.accent }]} />
-            <Text style={styles.sessionText}>SESSION LIVE</Text>
-          </View>
+          <Text style={styles.welcome}>Welcome to</Text>
+          <Text style={styles.word}>{brand.wordmark}</Text>
+          <Text style={styles.tagline}>{brand.headline}</Text>
         </View>
-
-        <View style={styles.padDeck}>
-          <AgentGrid />
-        </View>
-
-        <View style={styles.mainSlot}>
-          <MainAgentWindow />
+        <View style={styles.cta}>
+          <PillButton label="Get started" onPress={() => router.replace('/home' as Href)} />
+          <PillButton
+            label="Enter System"
+            variant="ghost"
+            onPress={() => router.replace('/systems' as Href)}
+          />
         </View>
       </SafeAreaView>
     </View>
@@ -44,49 +44,55 @@ const styles = StyleSheet.create({
   },
   safe: {
     flex: 1,
-    paddingHorizontal: spacing.sm,
-    gap: spacing.sm,
+    paddingHorizontal: 28,
   },
-  topBar: {
-    flexDirection: 'row',
-    alignItems: 'flex-end',
-    justifyContent: 'space-between',
-    paddingHorizontal: 4,
-    paddingTop: 4,
+  hero: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 10,
   },
-  sub: {
+  markWell: {
+    width: 128,
+    height: 128,
+    borderRadius: 32,
+    backgroundColor: colors.chassis,
+    borderWidth: 1,
+    borderColor: colors.hairline,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 18,
+    overflow: 'hidden',
+  },
+  halo: {
+    position: 'absolute',
+    width: 180,
+    height: 180,
+    borderRadius: 90,
+    backgroundColor: 'rgba(255,255,255,0.06)',
+  },
+  welcome: {
     fontFamily: fonts.sans,
     color: colors.muted,
-    fontSize: 9,
-    letterSpacing: 1.8,
-    textTransform: 'uppercase',
-    marginTop: 4,
-    marginLeft: 36,
+    fontSize: 16,
   },
-  session: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 6,
-    paddingBottom: 4,
+  word: {
+    fontFamily: fonts.sansBold,
+    color: colors.ink,
+    fontSize: 44,
+    letterSpacing: -1.4,
   },
-  dot: {
-    width: 7,
-    height: 7,
-    borderRadius: 4,
-  },
-  sessionText: {
-    fontFamily: fonts.sansMedium,
+  tagline: {
+    fontFamily: fonts.sans,
     color: colors.muted,
-    fontSize: 9,
-    letterSpacing: 1.2,
+    fontSize: 16,
+    lineHeight: 24,
+    textAlign: 'center',
+    maxWidth: 280,
+    marginTop: 4,
   },
-  padDeck: {
-    flex: 2,
-    minHeight: 0,
-  },
-  mainSlot: {
-    flex: 1,
-    minHeight: 220,
-    marginBottom: spacing.sm,
+  cta: {
+    gap: 10,
+    paddingBottom: 28,
   },
 });

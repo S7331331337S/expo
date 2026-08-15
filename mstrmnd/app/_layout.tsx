@@ -1,10 +1,9 @@
 import '../polyfills';
-import { useCallback, useEffect, useState } from 'react';
-import { Stack } from 'expo-router';
+import { useEffect } from 'react';
+import { Stack, ThemeProvider, DarkTheme } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import * as SplashScreen from 'expo-splash-screen';
 import { useFonts } from 'expo-font';
-import { ThemeProvider, DarkTheme } from '@react-navigation/native';
 import {
   Syne_700Bold,
   Syne_800ExtraBold,
@@ -19,7 +18,6 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { StyleSheet } from 'react-native';
 import { ControllerProvider } from '@/context/ControllerContext';
 import { MobileShell } from '@/components/MobileShell';
-import { SplashOverlay } from '@/components/SplashOverlay';
 import { linearNavigationTheme, color } from '@/tokens';
 
 SplashScreen.preventAutoHideAsync().catch(() => undefined);
@@ -37,7 +35,6 @@ const navigationTheme = {
 };
 
 export default function RootLayout() {
-  const [showBrandSplash, setShowBrandSplash] = useState(true);
   const [fontsLoaded] = useFonts({
     Syne_700Bold,
     Syne_800ExtraBold,
@@ -52,8 +49,6 @@ export default function RootLayout() {
       SplashScreen.hideAsync().catch(() => undefined);
     }
   }, [fontsLoaded]);
-
-  const onSplashDone = useCallback(() => setShowBrandSplash(false), []);
 
   if (!fontsLoaded) {
     return null;
@@ -72,7 +67,6 @@ export default function RootLayout() {
                 animation: 'fade',
               }}
             />
-            <SplashOverlay visible={showBrandSplash} onDone={onSplashDone} />
           </ControllerProvider>
         </MobileShell>
       </ThemeProvider>

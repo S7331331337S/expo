@@ -28,7 +28,8 @@ function messageText(parts: { type: string; text?: string }[]): string {
 }
 
 export function MainAgentWindow() {
-  const { selectedAgent, selectedId, setAgentStatus, selectAgent } = useController();
+  const { selectedAgent, selectedId, setAgentStatus, selectAgent, consumePendingCue } =
+    useController();
   const [input, setInput] = useState('');
   const [demoMessages, setDemoMessages] = useState<
     { id: string; role: 'user' | 'assistant'; text: string }[]
@@ -66,10 +67,9 @@ export function MainAgentWindow() {
     setMessages([]);
   }, [selectedId, setMessages]);
 
-  const onSend = async () => {
-    const text = input.trim();
+  const sendText = async (raw: string) => {
+    const text = raw.trim();
     if (!text || isStreaming) return;
-    setInput('');
 
     if (useDemo || error) {
       const userMsg = { id: `u-${Date.now()}`, role: 'user' as const, text };
@@ -91,6 +91,22 @@ export function MainAgentWindow() {
     }
 
     await sendMessage({ text });
+  };
+
+  useEffect(() => {
+    const pending = consumePendingCue();
+    if (pending) {
+      void sendText(pending);
+    }
+    // Fire once when the window mounts with a queued cue.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const onSend = async () => {
+    const text = input.trim();
+    if (!text || isStreaming) return;
+    setInput('');
+    await sendText(text);
   };
 
   const displayMessages =

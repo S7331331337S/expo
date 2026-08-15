@@ -4,7 +4,8 @@ Tuned mastermind agent controller for Expo (SDK 57).
 
 Official brand mark is the metallic tetrahedron. Marketing and the native app share one **Linear** token set (true-black substrate, indigo accent, glass surfaces).
 
-The full screen is a MIDI-style drum-pad grid: **12 department agents** in a **3×4** layout, with a **CONDUCTOR** main window consuming the lower third. Pads are gamified (level / XP / status) and animated so active agents feel alive.
+Welcome is a Linear/Vercel-style entry: metallic mark, “Welcome to MSTRMND”, **Get started**. Home is the command session. Systems is the 12-pad controller.
+
 
 ## Shared design tokens
 
@@ -41,7 +42,14 @@ npm install --legacy-peer-deps
 npx expo start
 ```
 
-Web loads the marketing stage (shimmer headline, glass pillar cards, token swatches) around the live phone preview. Native skips the marketing frame and opens the controller full-screen.
+Web and native share the same full-bleed screens — no toy phone chrome.
+
+## Screenshots
+
+![Welcome](docs/screenshots/marketing-desktop.png)
+
+![Home](docs/screenshots/controller-mobile.png)
+
 
 Regenerate splash/icon rasters after mark changes:
 
