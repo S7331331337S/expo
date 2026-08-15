@@ -15,7 +15,7 @@ import {
   Inter_700Bold,
 } from '@expo-google-fonts/inter';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { StyleSheet } from 'react-native';
+import { Platform, StyleSheet } from 'react-native';
 import { ControllerProvider } from '@/context/ControllerContext';
 import { MobileShell } from '@/components/MobileShell';
 import { SplashOverlay } from '@/components/SplashOverlay';
@@ -36,7 +36,7 @@ const navigationTheme = {
 };
 
 export default function RootLayout() {
-  const [showBrandSplash, setShowBrandSplash] = useState(true);
+  const [showBrandSplash, setShowBrandSplash] = useState(Platform.OS !== 'web');
   const [fontsLoaded] = useFonts({
     Syne_700Bold,
     Syne_800ExtraBold,

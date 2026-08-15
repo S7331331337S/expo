@@ -29,7 +29,7 @@ export const color = {
   /** Android glass fallback — high-opacity dark surface */
   glassFallback: 'rgba(18, 18, 20, 0.85)',
   /** Top ambient color leak */
-  accentGlow: 'rgba(94, 106, 210, 0.15)',
+  accentGlow: 'rgba(94, 106, 210, 0.22)',
   overlay: 'rgba(0, 0, 0, 0.5)',
   shimmerStart: '#FFFFFF',
   shimmerEnd: '#A3A3A3',

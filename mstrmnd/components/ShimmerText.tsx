@@ -28,10 +28,10 @@ export function ShimmerText({ children, style }: Props) {
 
 const styles = StyleSheet.create({
   base: {
-    fontFamily: font.display,
-    fontSize: 42,
-    letterSpacing: -0.8,
-    lineHeight: 46,
+    fontFamily: font.sansSemi,
+    fontSize: 56,
+    letterSpacing: -1.8,
+    lineHeight: 60,
   },
   native: {
     color: color.textPrimary,

@@ -41,15 +41,13 @@ npm install --legacy-peer-deps
 npx expo start
 ```
 
-Web loads the marketing stage (shimmer headline, glass pillar cards, token swatches) around the live phone preview. Native skips the marketing frame and opens the controller full-screen.
+Web loads a Linear-style marketing stage around the live phone preview. Native skips the marketing frame and opens the controller full-screen.
 
 ## Screenshots
 
-![Marketing desktop — Linear tokens beside the live controller](docs/screenshots/marketing-desktop.png)
+![Marketing desktop](docs/screenshots/marketing-desktop.png)
 
-![Boot splash over the marketing stage](docs/screenshots/marketing-splash.png)
-
-![Narrow web — marketing stack above the phone chrome](docs/screenshots/controller-mobile.png)
+![Narrow web](docs/screenshots/controller-mobile.png)
 
 
 Regenerate splash/icon rasters after mark changes:
