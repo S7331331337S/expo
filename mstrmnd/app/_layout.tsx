@@ -1,10 +1,9 @@
 import '../polyfills';
 import { useCallback, useEffect, useState } from 'react';
-import { Stack } from 'expo-router';
+import { Stack, ThemeProvider, DarkTheme } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import * as SplashScreen from 'expo-splash-screen';
 import { useFonts } from 'expo-font';
-import { ThemeProvider, DarkTheme } from '@react-navigation/native';
 import {
   Syne_700Bold,
   Syne_800ExtraBold,
