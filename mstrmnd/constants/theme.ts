@@ -3,8 +3,8 @@ import { color as linearColor, font, radius as linearRadius, space } from '@/tok
 
 export const brand = {
   name: 'MSTRMND',
-  /** Continuous wordmark — use letterSpacing in UI, not literal spaces */
   wordmark: 'MSTRMND',
+  headline: 'The operating layer for AI systems.',
   tagline: 'Building intelligent systems. Empowering human potential.',
   pillars: ['Research', 'Technology', 'Systems', 'Future'] as const,
 } as const;
@@ -34,6 +34,7 @@ export const colors = {
   cyan: '#3DDCFF',
   coral: '#FF6B4A',
   mint: '#5EF2C0',
+  live: '#F5F5F7',
   danger: '#FF4D6A',
 } as const;
 
