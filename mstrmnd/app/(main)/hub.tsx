@@ -1,9 +1,9 @@
 import { StyleSheet, Text, View } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
 import { useRouter, type Href } from 'expo-router';
+import { CinematicBackground } from '@/components/CinematicBackground';
 import { IntegrationOrbit } from '@/components/IntegrationOrbit';
 import { ScreenHeader } from '@/components/ScreenHeader';
-import { brand, colors, spacing } from '@/constants/theme';
+import { brand, colors, fonts, spacing } from '@/constants/theme';
 import { useController } from '@/context/ControllerContext';
 import type { Integration } from '@/constants/integrations';
 
@@ -18,7 +18,8 @@ export default function HubScreen() {
   };
 
   return (
-    <LinearGradient colors={['#101014', '#070708', '#000000']} style={styles.root}>
+    <View style={styles.root}>
+      <CinematicBackground />
       <ScreenHeader onMenuPress={() => router.replace('/systems' as Href)} />
       <View style={styles.body}>
         <Text style={styles.kicker}>INTEGRATIONS</Text>
@@ -26,7 +27,7 @@ export default function HubScreen() {
         <IntegrationOrbit onSelect={openTool} />
         <Text style={styles.tag}>{brand.tagline}</Text>
       </View>
-    </LinearGradient>
+    </View>
   );
 }
 
@@ -42,19 +43,19 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   kicker: {
-    fontFamily: 'Syne_800ExtraBold',
+    fontFamily: fonts.display,
     color: colors.chromeHot,
     fontSize: 22,
     letterSpacing: 3,
   },
   lead: {
-    fontFamily: 'SpaceGrotesk_400Regular',
+    fontFamily: fonts.sans,
     color: colors.muted,
     fontSize: 13,
     marginBottom: 8,
   },
   tag: {
-    fontFamily: 'SpaceGrotesk_400Regular',
+    fontFamily: fonts.sans,
     color: colors.muted,
     fontSize: 10,
     letterSpacing: 0.6,

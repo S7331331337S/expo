@@ -13,7 +13,7 @@ import {
   IconWorkspace,
 } from '@/components/icons';
 import { INTEGRATIONS, type Integration } from '@/constants/integrations';
-import { colors } from '@/constants/theme';
+import { colors, fonts } from '@/constants/theme';
 
 const ICON = {
   chat: IconChat,
@@ -174,7 +174,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     width: 92,
     textAlign: 'center',
-    fontFamily: 'SpaceGrotesk_500Medium',
+    fontFamily: fonts.sansMedium,
     color: colors.muted,
     fontSize: 8,
     letterSpacing: 1.1,

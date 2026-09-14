@@ -2,7 +2,7 @@ import { Pressable, StyleSheet, Text, View } from 'react-native';
 import * as Haptics from 'expo-haptics';
 import type { Command, CommandIcon } from '@/constants/commands';
 import { COMMANDS } from '@/constants/commands';
-import { colors, radii, spacing } from '@/constants/theme';
+import { colors, fonts, radii, spacing } from '@/constants/theme';
 import {
   IconChart,
   IconChevron,
@@ -93,13 +93,13 @@ const styles = StyleSheet.create({
     minWidth: 0,
   },
   title: {
-    fontFamily: 'SpaceGrotesk_500Medium',
+    fontFamily: fonts.sansMedium,
     color: colors.ink,
     fontSize: 15,
     letterSpacing: 0.2,
   },
   blurb: {
-    fontFamily: 'SpaceGrotesk_400Regular',
+    fontFamily: fonts.sans,
     color: colors.muted,
     fontSize: 12,
     marginTop: 2,

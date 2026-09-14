@@ -9,12 +9,12 @@ import {
   TextInput,
   View,
 } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
 import { useRouter, type Href } from 'expo-router';
+import { CinematicBackground } from '@/components/CinematicBackground';
 import { CommandList } from '@/components/CommandList';
 import { ScreenHeader } from '@/components/ScreenHeader';
 import type { Command } from '@/constants/commands';
-import { brand, colors, radii, spacing } from '@/constants/theme';
+import { brand, colors, fonts, radii, spacing } from '@/constants/theme';
 import { useController } from '@/context/ControllerContext';
 import { IconArrowRight } from '@/components/icons';
 
@@ -42,7 +42,8 @@ export default function HomeScreen() {
   };
 
   return (
-    <LinearGradient colors={['#101014', '#070708', '#000000']} style={styles.root}>
+    <View style={styles.root}>
+      <CinematicBackground />
       <KeyboardAvoidingView
         style={styles.root}
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
@@ -77,7 +78,7 @@ export default function HomeScreen() {
         </View>
         <Text style={styles.tag}>{brand.tagline}</Text>
       </KeyboardAvoidingView>
-    </LinearGradient>
+    </View>
   );
 }
 
@@ -94,7 +95,7 @@ const styles = StyleSheet.create({
     gap: spacing.sm,
   },
   kicker: {
-    fontFamily: 'SpaceGrotesk_500Medium',
+    fontFamily: fonts.sansMedium,
     color: colors.muted,
     fontSize: 10,
     letterSpacing: 2.4,
@@ -117,7 +118,7 @@ const styles = StyleSheet.create({
   },
   input: {
     flex: 1,
-    fontFamily: 'SpaceGrotesk_400Regular',
+    fontFamily: fonts.sans,
     color: colors.ink,
     fontSize: 14,
     paddingVertical: Platform.OS === 'ios' ? 8 : 6,
@@ -126,14 +127,14 @@ const styles = StyleSheet.create({
     width: 36,
     height: 36,
     borderRadius: 18,
-    backgroundColor: '#1A1A20',
+    backgroundColor: colors.chassisRaised,
     borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.12)',
+    borderColor: colors.hairline,
     alignItems: 'center',
     justifyContent: 'center',
   },
   tag: {
-    fontFamily: 'SpaceGrotesk_400Regular',
+    fontFamily: fonts.sans,
     color: colors.muted,
     fontSize: 9,
     letterSpacing: 0.8,

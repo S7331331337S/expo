@@ -1,23 +1,19 @@
 import { StyleSheet, Text, View } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter, type Href } from 'expo-router';
 import { BrandLockup } from '@/components/BrandLockup';
+import { CinematicBackground } from '@/components/CinematicBackground';
 import { EnterButton } from '@/components/EnterButton';
 import { HudFrame, StatusLive } from '@/components/HudFrame';
 import { WelcomeOrbit } from '@/components/WelcomeOrbit';
-import { brand, colors, spacing } from '@/constants/theme';
+import { brand, colors, fonts, spacing } from '@/constants/theme';
 
 export default function WelcomeScreen() {
   const router = useRouter();
 
   return (
     <View style={styles.root}>
-      <LinearGradient
-        colors={['#101014', '#070708', '#000000']}
-        locations={[0, 0.45, 1]}
-        style={StyleSheet.absoluteFill}
-      />
+      <CinematicBackground />
       <SafeAreaView style={styles.safe} edges={['top', 'left', 'right', 'bottom']}>
         <View style={styles.top}>
           <BrandLockup markSize={22} compact />
@@ -62,14 +58,14 @@ const styles = StyleSheet.create({
     gap: 18,
   },
   welcome: {
-    fontFamily: 'SpaceGrotesk_400Regular',
+    fontFamily: fonts.sans,
     color: colors.chrome,
     fontSize: 14,
     letterSpacing: 1.4,
     textAlign: 'center',
   },
   tagline: {
-    fontFamily: 'SpaceGrotesk_400Regular',
+    fontFamily: fonts.sans,
     color: colors.muted,
     fontSize: 12,
     letterSpacing: 0.4,

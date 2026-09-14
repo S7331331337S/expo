@@ -1,7 +1,7 @@
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import * as Haptics from 'expo-haptics';
-import { colors, radii } from '@/constants/theme';
+import { colors, fonts, radii } from '@/constants/theme';
 import { IconArrowRight } from '@/components/icons';
 
 type Props = {
@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(255,255,255,0.22)',
   },
   label: {
-    fontFamily: 'SpaceGrotesk_500Medium',
+    fontFamily: fonts.sansMedium,
     color: colors.chromeHot,
     fontSize: 15,
     letterSpacing: 1.4,

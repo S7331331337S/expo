@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { colors } from '@/constants/theme';
+import { colors, fonts } from '@/constants/theme';
 
 type Props = {
   children: ReactNode;
@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
     shadowRadius: 6,
   },
   liveText: {
-    fontFamily: 'SpaceGrotesk_500Medium',
+    fontFamily: fonts.sansMedium,
     color: colors.metal,
     fontSize: 9,
     letterSpacing: 1.6,

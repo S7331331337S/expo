@@ -10,13 +10,13 @@ import {
   TextInput,
   View,
 } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
 import { useChat } from '@ai-sdk/react';
 import { DefaultChatTransport } from 'ai';
 import { fetch as expoFetch } from 'expo/fetch';
+import { GlassCard } from '@/components/GlassCard';
 import { LivingPulse, LifeOrb } from '@/components/LivingPulse';
 import { useController } from '@/context/ControllerContext';
-import { colors, radii, spacing, brand } from '@/constants/theme';
+import { colors, fonts, radii, spacing, brand } from '@/constants/theme';
 import { generateAPIUrl } from '@/utils/api';
 import { streamDemoReply } from '@/utils/demoStream';
 
@@ -119,10 +119,7 @@ export function MainAgentWindow() {
       behavior={Platform.OS === 'ios' ? 'padding' : undefined}
       style={styles.shell}
     >
-      <LinearGradient
-        colors={['#141A22', '#0C1016', '#0A0E13']}
-        style={styles.window}
-      >
+      <GlassCard style={styles.window} padded={false} fill>
         <Pressable
           onPress={() => selectAgent('conductor')}
           style={[
@@ -203,7 +200,7 @@ export function MainAgentWindow() {
             <Text style={styles.sendLabel}>RUN</Text>
           </Pressable>
         </View>
-      </LinearGradient>
+      </GlassCard>
     </KeyboardAvoidingView>
   );
 }
@@ -216,9 +213,6 @@ const styles = StyleSheet.create({
   window: {
     flex: 1,
     borderRadius: radii.window,
-    borderWidth: 1,
-    borderColor: colors.bezel,
-    overflow: 'hidden',
   },
   header: {
     flexDirection: 'row',
@@ -234,19 +228,19 @@ const styles = StyleSheet.create({
     minWidth: 0,
   },
   brandLine: {
-    fontFamily: 'SpaceGrotesk_400Regular',
+    fontFamily: fonts.sans,
     color: colors.muted,
     fontSize: 9,
     letterSpacing: 2.2,
     textTransform: 'uppercase',
   },
   agentName: {
-    fontFamily: 'Syne_700Bold',
+    fontFamily: fonts.displayBold,
     fontSize: 18,
     letterSpacing: 0.5,
   },
   role: {
-    fontFamily: 'SpaceGrotesk_400Regular',
+    fontFamily: fonts.sans,
     color: colors.metal,
     fontSize: 11,
     marginTop: 1,
@@ -257,7 +251,7 @@ const styles = StyleSheet.create({
     gap: 4,
   },
   level: {
-    fontFamily: 'SpaceGrotesk_500Medium',
+    fontFamily: fonts.sansMedium,
     color: colors.muted,
     fontSize: 8,
     letterSpacing: 0.6,
@@ -270,7 +264,7 @@ const styles = StyleSheet.create({
     gap: spacing.sm,
   },
   placeholder: {
-    fontFamily: 'SpaceGrotesk_400Regular',
+    fontFamily: fonts.sans,
     color: colors.muted,
     fontSize: 13,
     lineHeight: 19,
@@ -282,25 +276,25 @@ const styles = StyleSheet.create({
   },
   userBubble: {
     alignSelf: 'flex-end',
-    backgroundColor: '#1A2430',
+    backgroundColor: colors.padPressed,
     borderColor: colors.hairline,
     maxWidth: '88%',
   },
   agentBubble: {
     alignSelf: 'flex-start',
-    backgroundColor: '#12181F',
-    borderColor: '#243040',
+    backgroundColor: colors.chassis,
+    borderColor: colors.bezel,
     maxWidth: '92%',
   },
   bubbleRole: {
-    fontFamily: 'SpaceGrotesk_500Medium',
+    fontFamily: fonts.sansMedium,
     color: colors.muted,
     fontSize: 9,
     letterSpacing: 1,
     marginBottom: 4,
   },
   bubbleText: {
-    fontFamily: 'SpaceGrotesk_400Regular',
+    fontFamily: fonts.sans,
     color: colors.ink,
     fontSize: 14,
     lineHeight: 20,
@@ -311,7 +305,7 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   streamingLabel: {
-    fontFamily: 'SpaceGrotesk_500Medium',
+    fontFamily: fonts.sansMedium,
     fontSize: 11,
     letterSpacing: 0.4,
   },
@@ -325,7 +319,7 @@ const styles = StyleSheet.create({
   },
   input: {
     flex: 1,
-    fontFamily: 'SpaceGrotesk_400Regular',
+    fontFamily: fonts.sans,
     color: colors.ink,
     backgroundColor: colors.pad,
     borderRadius: 10,
@@ -342,8 +336,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   sendLabel: {
-    fontFamily: 'Syne_700Bold',
-    color: '#0A0C0E',
+    fontFamily: fonts.displayBold,
+    color: colors.ink,
     fontSize: 13,
     letterSpacing: 1,
   },
