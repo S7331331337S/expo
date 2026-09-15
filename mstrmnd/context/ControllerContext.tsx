@@ -22,6 +22,9 @@ type ControllerContextValue = {
   setAgentStatus: (id: string, status: AgentStatus) => void;
   bumpActivity: (id: string, amount?: number) => void;
   selectedAgent: (typeof DEPARTMENT_AGENTS)[number] | typeof MAIN_AGENT;
+  pendingCue: string | null;
+  queueCue: (text: string) => void;
+  consumePendingCue: () => string | null;
 };
 
 const defaultRuntimes = (): Record<string, AgentRuntime> => {
@@ -42,6 +45,7 @@ const ControllerContext = createContext<ControllerContextValue | null>(null);
 export function ControllerProvider({ children }: { children: ReactNode }) {
   const [selectedId, setSelectedId] = useState<string>(MAIN_AGENT.id);
   const [runtimes, setRuntimes] = useState(defaultRuntimes);
+  const [pendingCue, setPendingCue] = useState<string | null>(null);
 
   /** Ambient life — idle pads occasionally tick so the grid feels inhabited */
   useEffect(() => {
@@ -108,6 +112,16 @@ export function ControllerProvider({ children }: { children: ReactNode }) {
     });
   }, []);
 
+  const queueCue = useCallback((text: string) => {
+    setPendingCue(text);
+  }, []);
+
+  const consumePendingCue = useCallback(() => {
+    const taken = pendingCue;
+    if (taken) setPendingCue(null);
+    return taken;
+  }, [pendingCue]);
+
   const selectedAgent = useMemo(() => {
     if (selectedId === MAIN_AGENT.id) return MAIN_AGENT;
     return DEPARTMENT_AGENTS.find((a) => a.id === selectedId) ?? MAIN_AGENT;
@@ -121,8 +135,21 @@ export function ControllerProvider({ children }: { children: ReactNode }) {
       setAgentStatus,
       bumpActivity,
       selectedAgent,
+      pendingCue,
+      queueCue,
+      consumePendingCue,
     }),
-    [selectedId, selectAgent, runtimes, setAgentStatus, bumpActivity, selectedAgent],
+    [
+      selectedId,
+      selectAgent,
+      runtimes,
+      setAgentStatus,
+      bumpActivity,
+      selectedAgent,
+      pendingCue,
+      queueCue,
+      consumePendingCue,
+    ],
   );
 
   return (

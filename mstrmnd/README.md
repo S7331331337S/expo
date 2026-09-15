@@ -1,10 +1,16 @@
 # MSTRMND
 
-Tuned mastermind agent controller for Expo (SDK 57).
+The operating layer for AI systems.
 
-Official brand mark is the metallic tetrahedron. Marketing and the native app share one **Linear** token set (true-black substrate, indigo accent, glass surfaces).
+Expo (SDK 57) controller. Official mark is the metallic tetrahedron. Copy uses **MSTRMND** with that single tagline. Marketing and the native app share one **Linear** token set (true-black substrate, indigo accent, glass surfaces).
 
-The full screen is a MIDI-style drum-pad grid: **12 department agents** in a **3×4** layout, with a **CONDUCTOR** main window consuming the lower third. Pads are gamified (level / XP / status) and animated so active agents feel alive.
+Three beats:
+
+1. **Welcome** — mark, wordmark, tagline, Enter System
+2. **Home** — command list (Create Plan, Research, Build System, Analyze, Connect Tools, Evolve)
+3. **Hub** — one integrations ring
+
+The MIDI-style **Systems** deck (12 department pads + CONDUCTOR) is still the instrument behind those commands.
 
 ## Shared design tokens
 
@@ -31,7 +37,7 @@ The full screen is a MIDI-style drum-pad grid: **12 department agents** in a **3
 - Inter (UI) + Syne (wordmark)
 - `expo-blur` glass + `expo-linear-gradient` cinematic glow
 - Vercel AI SDK (`ai` + `@ai-sdk/react`) with `expo/fetch` streaming
-- Reanimated living pulses / orbs + SVG brand mark
+- Reanimated pulses + SVG brand mark
 
 ## Run
 
@@ -41,7 +47,7 @@ npm install --legacy-peer-deps
 npx expo start
 ```
 
-Web loads the marketing stage (shimmer headline, glass pillar cards, token swatches) around the live phone preview. Native skips the marketing frame and opens the controller full-screen.
+Web loads the marketing stage (shimmer headline, glass cards, token swatches) around the live phone preview. Native skips the marketing frame and opens the controller full-screen.
 
 Regenerate splash/icon rasters after mark changes:
 
@@ -55,14 +61,13 @@ node scripts/generate-brand-assets.mjs
 2. Set `AI_GATEWAY_API_KEY` (Vercel AI Gateway)
 3. Optionally set `EXPO_PUBLIC_AI_GATEWAY_API_KEY=1` so the client prefers the API over the demo stream
 
-Without a key, tapping **RUN** uses a local character-stream demo so the pad deck still feels alive.
+Without a key, cues use a local character-stream demo.
 
 ## Layout
 
-| Zone | Role |
-|------|------|
-| Top brand bar | Tetrahedron mark + `MSTRMND` + session LED |
-| Pad deck (~2/3) | 12 department pads (STRAT → BRAND) |
-| Main window (~1/3) | Active agent transcript + cue input |
-
-Tap a pad to focus it in the main window. Tap the main header to return to **CONDUCTOR**.
+| Screen | Role |
+|--------|------|
+| Welcome | Tetrahedron + tagline + **Enter System** |
+| Home | Six commands + cue field |
+| Hub | Integration orbit |
+| Systems | 12 department pads + main window |

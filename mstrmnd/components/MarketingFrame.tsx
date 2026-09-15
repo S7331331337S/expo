@@ -40,9 +40,9 @@ export function MarketingFrame({ children }: Props) {
             on iOS, Android, and the live controller.
           </Text>
           <View style={[styles.pillars, !wide && styles.pillarsWrap]}>
-            {brand.pillars.map((pillar) => (
-              <GlassCard key={pillar} style={styles.pillar} padded={false}>
-                <Text style={styles.pillarLabel}>{pillar}</Text>
+            {['Welcome', 'Commands', 'Hub', 'Systems'].map((beat) => (
+              <GlassCard key={beat} style={styles.pillar} padded={false}>
+                <Text style={styles.pillarLabel}>{beat}</Text>
               </GlassCard>
             ))}
           </View>

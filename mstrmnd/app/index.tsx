@@ -1,36 +1,35 @@
 import { StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { AgentGrid } from '@/components/AgentGrid';
+import { useRouter, type Href } from 'expo-router';
 import { BrandLockup } from '@/components/BrandLockup';
 import { CinematicBackground } from '@/components/CinematicBackground';
-import { MainAgentWindow } from '@/components/MainAgentWindow';
-import { colors, fonts, spacing } from '@/constants/theme';
-import { useController } from '@/context/ControllerContext';
+import { EnterButton } from '@/components/EnterButton';
+import { HudFrame, StatusLive } from '@/components/HudFrame';
+import { WelcomeOrbit } from '@/components/WelcomeOrbit';
+import { brand, colors, fonts, spacing } from '@/constants/theme';
 
-export default function ControllerScreen() {
-  const { selectedAgent } = useController();
+export default function WelcomeScreen() {
+  const router = useRouter();
 
   return (
     <View style={styles.root}>
       <CinematicBackground />
-      <SafeAreaView style={styles.safe} edges={['top', 'left', 'right']}>
-        <View style={styles.topBar}>
-          <View>
-            <BrandLockup markSize={26} compact />
-            <Text style={styles.sub}>agent controller</Text>
-          </View>
-          <View style={styles.session}>
-            <View style={[styles.dot, { backgroundColor: selectedAgent.accent }]} />
-            <Text style={styles.sessionText}>SESSION LIVE</Text>
-          </View>
+      <SafeAreaView style={styles.safe} edges={['top', 'left', 'right', 'bottom']}>
+        <View style={styles.top}>
+          <BrandLockup markSize={22} compact />
+          <StatusLive />
         </View>
 
-        <View style={styles.padDeck}>
-          <AgentGrid />
+        <View style={styles.hero}>
+          <WelcomeOrbit size={248} />
+          <HudFrame width={268}>
+            <Text style={styles.welcome}>Welcome to {brand.wordmark}</Text>
+            <Text style={styles.tagline}>{brand.tagline}</Text>
+          </HudFrame>
         </View>
 
-        <View style={styles.mainSlot}>
-          <MainAgentWindow />
+        <View style={styles.cta}>
+          <EnterButton onPress={() => router.replace('/home' as Href)} />
         </View>
       </SafeAreaView>
     </View>
@@ -44,49 +43,35 @@ const styles = StyleSheet.create({
   },
   safe: {
     flex: 1,
-    paddingHorizontal: spacing.sm,
-    gap: spacing.sm,
+    paddingHorizontal: spacing.lg,
   },
-  topBar: {
-    flexDirection: 'row',
-    alignItems: 'flex-end',
-    justifyContent: 'space-between',
-    paddingHorizontal: 4,
-    paddingTop: 4,
-  },
-  sub: {
-    fontFamily: fonts.sans,
-    color: colors.muted,
-    fontSize: 9,
-    letterSpacing: 1.8,
-    textTransform: 'uppercase',
-    marginTop: 4,
-    marginLeft: 36,
-  },
-  session: {
+  top: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 6,
-    paddingBottom: 4,
+    justifyContent: 'space-between',
+    paddingTop: 4,
   },
-  dot: {
-    width: 7,
-    height: 7,
-    borderRadius: 4,
-  },
-  sessionText: {
-    fontFamily: fonts.sansMedium,
-    color: colors.muted,
-    fontSize: 9,
-    letterSpacing: 1.2,
-  },
-  padDeck: {
-    flex: 2,
-    minHeight: 0,
-  },
-  mainSlot: {
+  hero: {
     flex: 1,
-    minHeight: 220,
-    marginBottom: spacing.sm,
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 18,
+  },
+  welcome: {
+    fontFamily: fonts.sans,
+    color: colors.chrome,
+    fontSize: 14,
+    letterSpacing: 1.4,
+    textAlign: 'center',
+  },
+  tagline: {
+    fontFamily: fonts.sans,
+    color: colors.muted,
+    fontSize: 12,
+    letterSpacing: 0.4,
+    textAlign: 'center',
+  },
+  cta: {
+    paddingBottom: 18,
   },
 });
